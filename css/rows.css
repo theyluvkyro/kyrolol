@@ -1,0 +1,215 @@
+/* ─── ROWS & CARDS ──────────────────────────────────────────────── */
+.rows-container {
+  position: relative;
+  z-index: 10;
+  margin-top: -80px;
+  padding-bottom: 80px;
+}
+
+.row {
+  position: relative;
+  margin-bottom: 40px;
+}
+.row:hover .row__title   { color: #fff; }
+.row:hover .row__explore { opacity: 1; }
+
+.row__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 60px;
+  margin-bottom: 10px;
+}
+.row__title {
+  font-size: clamp(14px, 1.3vw, 20px);
+  font-weight: 700;
+  color: #e5e5e5;
+  line-height: 1;
+  cursor: default;
+}
+.row__explore {
+  font-size: 12px;
+  color: #54b9c5;
+  opacity: 0;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.row__explore svg { width: 13px; height: 13px; }
+
+/* ── Slider wrapper – clips horizontal, allows vertical overflow for hover panel */
+.row__slider-wrap {
+  position: relative;
+  /* Clip only on x axis so fixed hover panel still shows */
+}
+
+/* Arrow handles */
+.row__handle {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 60px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20,20,20,0.55);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+  border: none;
+  color: #fff;
+}
+.row__slider-wrap:hover .row__handle { opacity: 1; }
+.row__handle:hover { background: rgba(20,20,20,0.88); }
+.row__handle--left  { left: 0;  border-radius: 4px 0 0 4px; }
+.row__handle--right { right: 0; border-radius: 0 4px 4px 0; }
+.row__handle svg { width: 36px; height: 36px; }
+
+/* ── Slider track – scrolls horizontally */
+.row__slider {
+  display: flex;
+  gap: 4px;
+  padding: 0 60px;
+  overflow-x: scroll;
+  overflow-y: visible;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+.row__slider::-webkit-scrollbar { display: none; }
+
+/* ─── CARD ── */
+.card {
+  /* Fixed pixel width so cards are always the right size */
+  flex: 0 0 calc(16.66% - 4px);
+  min-width: 120px;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;       /* clip thumbnail normally */
+  cursor: pointer;
+  transition: transform 0.25s ease, border-radius 0.25s ease;
+  transform-origin: center center;
+  z-index: 1;
+}
+
+.card.card--first { transform-origin: left center; }
+.card.card--last  { transform-origin: right center; }
+
+/* Scale up on hover — overflow:visible so panel peeks out */
+.card.hovered {
+  transform: scale(1.5);
+  z-index: 200;
+  overflow: visible;
+  border-radius: 4px 4px 0 0;
+}
+
+/* ── Thumbnail */
+.card__thumb-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #2a2a2a;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.card.hovered .card__thumb-wrap {
+  border-radius: 4px 4px 0 0;
+}
+
+.card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ─── HOVER PANEL — fixed position, placed by JS ── */
+.card-hover-panel {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  background: #181818;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.08);
+}
+.card-hover-panel.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.card-hover-panel__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 10px 6px;
+}
+
+.chp-btn {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  border: 2px solid rgba(255,255,255,0.5);
+  background: rgba(30,30,30,0.95);
+  color: #fff;
+  transition: border-color 0.12s, background 0.12s;
+  flex-shrink: 0;
+}
+.chp-btn:hover   { border-color: #fff; }
+.chp-btn svg     { width: 16px; height: 16px; }
+.chp-btn--play   { background: #fff; border-color: #fff; color: #000; }
+.chp-btn--play:hover { background: rgba(255,255,255,0.8); }
+.chp-btn--chevron { margin-left: auto; }
+
+.card-hover-panel__title {
+  padding: 0 10px 4px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card-hover-panel__meta {
+  padding: 0 10px 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  flex-wrap: wrap;
+}
+.chp-match { color: #46d369; font-weight: 700; }
+.chp-year  { color: #a3a3a3; }
+.chp-hd    {
+  border: 1px solid rgba(255,255,255,0.4);
+  padding: 0 3px;
+  font-size: 9px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.4;
+}
+.card-hover-panel__tags {
+  padding: 0 10px 10px;
+  font-size: 10px;
+  color: #e5e5e5;
+}
+.chp-tag + .chp-tag::before { content: ' · '; color: #555; }
+
+/* ─── Responsive ── */
+@media (max-width: 1100px) {
+  .card { flex: 0 0 calc(20% - 4px); }
+}
+@media (max-width: 900px) {
+  .row__header { padding: 0 30px; }
+  .row__slider  { padding: 0 30px; }
+  .card { flex: 0 0 calc(25% - 4px); }
+}
+@media (max-width: 640px) {
+  .row__header  { padding: 0 16px; }
+  .row__slider  { padding: 0 16px; }
+  .row__handle  { display: none; }
+  .card         { flex: 0 0 calc(33.33% - 4px); min-width: 90px; }
+  .card.hovered { transform: none; overflow: hidden; }
+  .card-hover-panel { display: none !important; }
+}

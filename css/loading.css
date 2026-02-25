@@ -1,0 +1,89 @@
+/* ─── LOADING & SKELETONS ───────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #2a2a2a 0%, #333 50%, #2a2a2a 100%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 4px;
+}
+
+.skeleton-card {
+  flex-shrink: 0;
+  width: 16.5%;
+  min-width: 130px;
+  aspect-ratio: 16/9;
+}
+
+/* Spinner */
+.spinner {
+  display: inline-block;
+  width: 40px; height: 40px;
+  border: 3px solid rgba(255,255,255,0.1);
+  border-top-color: var(--red);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.spinner-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+}
+
+/* Card preview panel */
+.card-preview {
+  display: none;
+  position: fixed;
+  z-index: 500;
+  background: var(--dark-card);
+  border-radius: 4px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.8);
+  width: 320px;
+  pointer-events: none;
+  animation: previewFade 0.2s ease;
+}
+@keyframes previewFade { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+.card-preview.visible { display: block; pointer-events: all; }
+
+.card-preview__video-wrap {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #000;
+  border-radius: 4px 4px 0 0;
+  overflow: hidden;
+}
+.card-preview__iframe { width: 100%; height: 100%; border: none; }
+
+.card-preview__body { padding: 12px 14px 14px; }
+.card-preview__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.card-preview__btn {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  border: 2px solid rgba(255,255,255,0.5);
+  background: rgba(42,42,42,0.9);
+  color: #fff;
+  transition: border-color var(--transition-fast);
+}
+.card-preview__btn:hover { border-color: #fff; }
+.card-preview__btn svg { width: 18px; height: 18px; }
+.card-preview__btn--play { background: #fff; border-color: #fff; color: #000; }
+.card-preview__btn--play:hover { background: rgba(255,255,255,0.75); }
+.card-preview__btn--more { margin-left: auto; }
+.card-preview__title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.card-preview__meta { font-size: 12px; display: flex; gap: 6px; margin-bottom: 8px; align-items: center; }
+.card-preview__match { color: var(--green); font-weight: 700; }
+.card-preview__year { color: var(--text-muted); }
+.card-preview__genres { font-size: 11px; color: var(--text-muted); }

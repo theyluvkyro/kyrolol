@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kyro</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/hero.css" />
+  <link rel="stylesheet" href="css/rows.css" />
+  <link rel="stylesheet" href="css/modal.css" />
+  <link rel="stylesheet" href="css/search.css" />
+  <link rel="stylesheet" href="css/loading.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar__left">
+      <a class="navbar__logo" href="#" onclick="goHome(event)">
+        <span class="navbar__logo-text">KYRO</span>
+      </a>
+      <ul class="navbar__links" id="navLinks">
+        <li><a href="#" class="navbar__link active" onclick="setActiveNav(event,'home')">Home</a></li>
+        <li><a href="#" class="navbar__link" onclick="setActiveNav(event,'tv')">TV Shows</a></li>
+        <li><a href="#" class="navbar__link" onclick="setActiveNav(event,'movies')">Movies</a></li>
+        <li>
+          <a href="#" class="navbar__link navbar__link--dropdown" id="genresToggle">
+            Genres
+            <svg class="dropdown-arrow" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+          </a>
+          <div class="genre-dropdown" id="genreDropdown"></div>
+        </li>
+      </ul>
+    </div>
+    <div class="navbar__right">
+      <button class="navbar__icon-btn search-toggle" id="searchToggleBtn" aria-label="Search" onclick="toggleSearch()">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      </button>
+      <div class="search-inline" id="searchInline">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input type="text" id="searchInput" placeholder="Titles, people, genres" autocomplete="off" />
+      </div>
+      <div class="navbar__profile">
+        <img src="assets/avatar.png" class="navbar__avatar" onerror="this.style.background='#e50914';this.removeAttribute('src')" alt="Profile" />
+        <svg class="dropdown-arrow" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+        <div class="profile-dropdown">
+          <div class="profile-dropdown__item">Account</div>
+          <div class="profile-dropdown__item">Help Center</div>
+          <div class="profile-dropdown__divider"></div>
+          <div class="profile-dropdown__item">Sign out of Kyro</div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- SEARCH RESULTS -->
+  <section class="search-section" id="searchSection">
+    <div class="search-grid" id="searchGrid"></div>
+  </section>
+
+  <!-- MAIN BROWSE -->
+  <main id="mainBrowse">
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div class="hero__backdrop" id="heroBg"></div>
+      <div class="hero__vignette"></div>
+      <div class="hero__vignette-bottom"></div>
+      <div class="hero__content" id="heroContent">
+        <div class="hero__logo-img" id="heroLogoImg"></div>
+        <div class="hero__title" id="heroTitle"></div>
+        <div class="hero__info-row" id="heroInfoRow"></div>
+        <div class="hero__desc" id="heroDesc"></div>
+        <div class="hero__actions">
+          <button class="hero__btn hero__btn--play" id="heroBtnPlay">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            Play
+          </button>
+          <button class="hero__btn hero__btn--info" id="heroBtnInfo">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            More Info
+          </button>
+        </div>
+      </div>
+      <div class="hero__maturity" id="heroMaturity"></div>
+    </section>
+
+    <!-- ROWS -->
+    <div class="rows-container" id="rowsContainer"></div>
+  </main>
+
+  <!-- CARD PREVIEW (Netflix expand-on-hover) -->
+  <div class="card-preview" id="cardPreview">
+    <div class="card-preview__video-wrap">
+      <iframe class="card-preview__iframe" id="previewIframe" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="card-preview__body">
+      <div class="card-preview__actions">
+        <button class="card-preview__btn card-preview__btn--play" id="previewPlayBtn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <button class="card-preview__btn card-preview__btn--add" title="Add to My List">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+        </button>
+        <button class="card-preview__btn card-preview__btn--like" title="Thumbs Up">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>
+        </button>
+        <button class="card-preview__btn card-preview__btn--more" id="previewMoreBtn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+        </button>
+      </div>
+      <div class="card-preview__title" id="previewTitle"></div>
+      <div class="card-preview__meta" id="previewMeta"></div>
+      <div class="card-preview__genres" id="previewGenres"></div>
+    </div>
+  </div>
+
+  <!-- FULL DETAIL MODAL -->
+  <div class="modal-overlay" id="modalOverlay" onclick="overlayClose(event)">
+    <div class="modal" id="modal">
+      <button class="modal__close" onclick="closeModal()">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+
+      <div class="modal__hero">
+        <div class="modal__backdrop" id="modalBackdrop"></div>
+        <div class="modal__backdrop-grad"></div>
+        <div class="modal__hero-content">
+          <div class="modal__title" id="modalTitle"></div>
+          <div class="modal__hero-actions">
+            <button class="hero__btn hero__btn--play" id="modalPlayBtn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              Play
+            </button>
+            <button class="hero__btn hero__btn--info modal__trailer-btn" id="modalTrailerBtn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z"/></svg>
+              Trailer
+            </button>
+            <button class="card-preview__btn card-preview__btn--add modal__add-btn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal__body">
+        <div class="modal__body-left">
+          <div class="modal__meta" id="modalMeta"></div>
+          <div class="modal__desc" id="modalDesc"></div>
+        </div>
+        <div class="modal__body-right">
+          <div class="modal__cast" id="modalCast"></div>
+          <div class="modal__genres" id="modalGenres"></div>
+        </div>
+      </div>
+
+      <!-- PLAYER SECTION -->
+      <div class="modal__player-section" id="modalPlayerSection">
+        <div class="modal__player-label">
+          <strong id="modalPlayerTitle">Watch Now</strong>
+          <button class="modal__retry-btn" onclick="_retryPlayer()" title="Try a different source">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+            Try another source
+          </button>
+        </div>
+        <div class="modal__player-wrap" id="modalPlayerWrap"></div>
+      </div>
+
+      <!-- TV EPISODES -->
+      <div class="modal__episodes-section" id="modalEpisodesSection" style="display:none">
+        <div class="modal__episodes-header">
+          <h3>Episodes</h3>
+          <select class="modal__season-select" id="modalSeasonSelect" onchange="changeSeason()"></select>
+        </div>
+        <div class="modal__episodes-list" id="modalEpisodesList"></div>
+      </div>
+
+      <!-- MORE LIKE THIS -->
+      <div class="modal__more-section" id="modalMoreSection">
+        <h3 class="modal__section-title">More Like This</h3>
+        <div class="modal__more-grid" id="modalMoreGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/preview.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

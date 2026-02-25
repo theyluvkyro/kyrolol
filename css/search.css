@@ -1,0 +1,71 @@
+/* ─── SEARCH ────────────────────────────────────────────────────── */
+.search-section {
+  display: none;
+  min-height: 100vh;
+  padding: calc(var(--nav-height) + 30px) 60px 60px;
+}
+.search-section.active { display: block; }
+#mainBrowse.hidden { display: none; }
+
+.search-section__title {
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+.search-section__title span { color: #fff; }
+
+.search-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 6px;
+}
+.search-grid__card {
+  position: relative;
+  aspect-ratio: 16/9;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #2a2a2a;
+  transition: transform var(--transition-normal);
+}
+.search-grid__card:hover { transform: scale(1.05); z-index: 5; }
+.search-grid__card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.search-grid__card-label {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 20px 10px 10px;
+  background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+  font-size: 13px;
+  font-weight: 700;
+}
+.search-grid__card-type {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.search-empty {
+  color: var(--text-muted);
+  font-size: 18px;
+  padding: 60px 0;
+  text-align: center;
+}
+
+/* Browse by genre section (shown before search) */
+.browse-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+@media (max-width: 640px) {
+  .search-section { padding: calc(var(--nav-height) + 20px) 16px 40px; }
+  .search-grid { grid-template-columns: repeat(2, 1fr); }
+}
